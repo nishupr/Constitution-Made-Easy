@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index, follow" />
+
+    <meta
+      name="description"
+      content="Learn the Indian Constitution in an interactive and fun way!"
+    />
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Indian Constitution Learning">
+    <meta
+      itemprop="description"
+      content="Learn the Indian Constitution in an interactive and fun way!"
+    />
+    <meta itemprop="image" content="assets/images/emblem.jpg" />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://indianconstitution.vercel.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Indian Constitution Learning" />
+    <meta
+      property="og:description"
+      content="Learn the Indian Constitution in an interactive and fun way!"
+    />
+    <meta property="og:image" content="assets/images/emblem.jpg" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Indian Constitution Learning" />
+    <meta
+      name="twitter:description"
+      content="Learn the Indian Constitution in an interactive and fun way!"
+    />
+    <meta name="twitter:image" content="assets/images/emblem.jpg" />
+
+    <link
+      rel="shortcut icon"
+      href="assets/images/emblem.jpg"
+      type="image/png"
+    />
+
+    <!-- Preloading fonts for better performance -->
+    <link
+      rel="preload"
+      href="assets/fonts/Mona-Sans.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+
+    <title>Indian Constitution Learning</title>
+  </head>
+
+  <body>
+    <div class="loading-screen">Loading...</div>
+    <script>
+      const theme = localStorage.getItem("theme") || "dark";
+      document.body.classList.add(theme);
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const typedText = document.querySelector(".typed-text");
+        const cursor = document.querySelector(".cursor");
+        const descriptionText = document.querySelector(".description-text");
+        const textArray = [
+          "Indian Constitution.",
+          "Organs Of Government.",
+          "Constitution Made Easy.",
+          "Interactive Learning.",
+          "Quizzes & Analytics.",
+          "Fun & Educational.",
+        ];
+        let textIndex = 0;
+        let charIndex = 0;
+        const description = `The Constitution of India, came in force on January 26, 1950, serves as the supreme law of the country, laying the foundation for its political, legal, and governance structures. It outlines the rights and duties of citizens, the framework of government institutions, and the guiding principles of India's democracy. The Indian government is divided into three primary organs: the Legislature, the Executive, and the Judiciary. The Legislature, or Parliament, is responsible for making laws; the Executive, headed by the President and Prime Minister, implements these laws; and the Judiciary, led by the Supreme Court, interprets the laws and ensures justice. Together, these organs function within a system of checks and balances to maintain democratic governance and uphold the Constitution's principles.`;
+
+        function typeHeading() {
+          if (charIndex < textArray[textIndex].length) {
+            typedText.textContent += textArray[textIndex].charAt(charIndex);
+            charIndex++;
+            setTimeout(typeHeading, 130);
+          } else {
+            setTimeout(eraseHeading, 1000);
+          }
+        }
+
+        function eraseHeading() {
+          if (charIndex > 0) {
+            typedText.textContent = textArray[textIndex].substring(0, charIndex - 1);
+            charIndex--;
+            setTimeout(eraseHeading, 100);
+          } else {
+            textIndex = (textIndex + 1) % textArray.length;
+            setTimeout(typeHeading, 500);
+          }
+        }
+
+        // Function for typing description without erasing
+        let descIndex = 0;
+        function typeDescription() {
+          if (descIndex < description.length) {
+            descriptionText.textContent += description.charAt(descIndex);
+            descIndex++;
+            setTimeout(typeDescription, 60);
+          }
+        }
+
+        typeHeading();
+        typeDescription();
+      });
+    </script>
+
+    <header class="header">
+      <div class="menu-btn-container">
+        <div class="container">
+          <button type="button" class="menu-btn">Menu</button>
+        </div>
+      </div>
+
+      <nav class="nav hidden">
+        <ol class="nav-items">
+          <li class="nav-item"><a href="#">Home</a></li>
+          <li class="nav-item"><a href="quizzes.html">Interactive Quizzes</a></li>
+          <li class="nav-item"><a href="spin-the-wheel.html">Spin the Wheel</a></li>
+          <li class="nav-item"><a href="card-draws.html">Card Draws</a></li>
+          <li class="nav-item"><a href="analytics.html">Analytics</a></li>
+        </ol>
+      </nav>
+
+      <div class="container">
+        <div class="header-textbox">
+          <div class="avatar-container">
+            <img src="assets/images/emblem.jpg" alt="Constitution Avatar" class="avatar" />
+          </div>
+          <h1 class="h1">
+            <span class="typed-text"></span><span class="cursor">|</span>
+          </h1>
+
+          <p class="header-text description-text"></p>
+
+          <div class="header-btns">
+  <a href="#" class="btn btn-cta">Get Started</a>
+  <a href="assets/images/constitution.pdf" class="btn btn-secondary" target="_blank">Docs</a>
+</div>
+        </div>
+      </div>
+    </header>
+    <section class="features" id="features">
+      <div class="container">
+        <h2 class="h2">Features</h2>
+        <div class="feature-boxes">
+          <div class="feature-box">
+            <h3 class="h3">Interactive Quizzes</h3>
+            <p class="feature-text">
+              Test your knowledge with quizzes designed to make learning the
+              Constitution engaging.
+            </p>
+          </div>
+          <div class="feature-box">
+            <h3 class="h3">Spin-the-Wheel</h3>
+            <p class="feature-text">
+              Make learning fun with our Spin-the-Wheel game, where each spin
+              teaches you something new.
+            </p>
+          </div>
+          <div class="feature-box">
+            <h3 class="h3">Card Draws</h3>
+            <p class="feature-text">
+              Draw cards that reveal fascinating facts about the Constitution,
+              helping you memorize key points.
+            </p>
+          </div>
+          <div class="feature-box">
+            <h3 class="h3">Progress Analytics</h3>
+            <p class="feature-text">
+              Track your learning progress with analytics that highlight your
+              strengths and areas for improvement.
+            </p>
+          </div>
+          <div class="feature-box">
+            <h3 class="h3">Interactive Learning Paths</h3>
+            <p class="feature-text">
+              Follow guided paths tailored to different learning levels, ensuring
+              a structured approach to mastering the Constitution.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="support">
+      <div class="container">
+        <h4 class="h4">
+          Got Any Questions? Join Our
+          <span class="support-color">Support Server.</span>
+        </h4>
+        <p class="support-text">
+          Our friendly community is here to help. Join our support server for
+          assistance and discussions.
+        </p>
+        <br />
+        <div class="support-btns">
+          <a href="#" class="btn btn-cta"
+            >Support Server</a
+          >
+        </div>
+        <br />
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <nav>
+            <ol class="footer-links">
+              <li class="footer-link">
+                <a
+                  title="GitHub"
+                  href="https://github.com/brawlersbinary"
+                  target="_blank"
+                  rel="noopener"
+                  ><img
+                    loading="lazy"
+                    src="assets/images/social-links/github.svg"
+                    alt="GitHub"
+                /></a>
+              </li>
+              <li class="footer-link">
+                <a
+                  title="Discord"
+                  href="#"
+                  target="_blank"
+                  rel="noopener"
+                  ><img
+                    loading="lazy"
+                    src="assets/images/social-links/discord.svg"
+                    alt="Discord"
+                /></a>
+              </li>
+            </ol>
+          </nav>
+          <p class="footer-text">
+            &copy; <span>2024</span> - Website designed & developed by
+            <a
+              target="_blank"
+              rel="noopener"
+              href="#"
+              >Binary Brawlers </a
+            >
+          </p>
+          <label class="theme-switch" for="theme-switch">
+            <span>Dark Theme</span>
+            <input type="checkbox" id="theme-switch" role="switch" />
+          </label>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

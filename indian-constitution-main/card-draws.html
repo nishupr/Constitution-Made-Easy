@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #000;
+            font-family: 'Mona-Sans', sans-serif;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            position: relative;
+            opacity: 0;
+            animation: slideIn 2s forwards;
+            flex-wrap: wrap;
+        }
+
+        .full-screen {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .full-screen.active {
+            display: flex;
+        }
+
+        .card {
+            width: 150px;
+            height: 200px;
+            background-color: #222;
+            border-radius: 15px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+            position: relative;
+            margin: 10px;
+        }
+
+        .card .front,
+        .card .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+        }
+
+        .card .front {
+            background-color: #222;
+        }
+
+        .card .back {
+            background-color: #555;
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInFromRight {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-out {
+            animation: slideOut 1s forwards;
+        }
+
+        .slide-in-from-right {
+            animation: slideInFromRight 1s forwards;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #222;
+            border-radius: 10px;
+            color: white;
+            display: none;
+            text-align: center;
+        }
+
+        .popup.active {
+            display: block;
+        }
+
+        .popup button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #555;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .back-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #555;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                width: 120px;
+                height: 160px;
+            }
+
+            .card-container {
+                gap: 10px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="card-container" id="initial-cards">
+        <div class="card" id="constitution-card">
+            <div class="front"></div>
+            <div class="back">Indian Constitution</div>
+        </div>
+        <div class="card" id="organ-bodies-card">
+            <div class="front"></div>
+            <div class="back">Organs of Indian Govt</div>
+        </div>
+    </div>
+
+    <div class="full-screen" id="organ-bodies-screen">
+        <div class="card-container" id="organ-bodies-cards">
+            <div class="card" id="legislative-card">
+                <div class="front"></div>
+                <div class="back">Legislative</div>
+            </div>
+            <div class="card" id="executive-card">
+                <div class="front"></div>
+                <div class="back">Executive</div>
+            </div>
+            <div class="card" id="judiciary-card">
+                <div class="front"></div>
+                <div class="back">Judiciary</div>
+            </div>
+        </div>
+        <button class="back-btn" onclick="goBack()">Go Back</button>
+    </div>
+
+    <div class="popup" id="constitution-popup">
+        <h2>Indian Constitution</h2>
+        <p>The Constitution of India is the longest written constitution of any country in the world. It provides a comprehensive framework to ensure democracy, justice, liberty, and equality for its citizens. Key components include:</p>
+        <ul>
+            <li><strong>Preamble</strong> – Introduction outlining the objectives of the Constitution.</li>
+            <li><strong>Fundamental Rights</strong> – Rights guaranteed to every citizen.</li>
+            <li><strong>Directive Principles</strong> – Guidelines for the state to ensure social and economic democracy.</li>
+            <li><strong>Amendments</strong> – Procedures to change the Constitution when necessary.</li>
+        </ul>
+        <button onclick="closePopup('constitution-popup')">Go Back</button>
+    </div>
+
+    <div class="popup" id="executive-popup">
+        <h2>Executive of India</h2>
+        <p>The Executive is responsible for the implementation of laws and policies in India. It consists of:</p>
+        <ul>
+            <li><strong>President</strong> – The ceremonial head of the state.</li>
+            <li><strong>Prime Minister</strong> – The head of government and chief executive.</li>
+            <li><strong>Cabinet Ministers</strong> – Responsible for specific government departments.</li>
+        </ul>
+        <button onclick="closePopup('executive-popup')">Go Back</button>
+    </div>
+
+    <div class="popup" id="legislative-popup">
+        <h2>Legislative Branch</h2>
+        <p>The legislative branch of India is responsible for making laws. It includes:</p>
+        <ul>
+            <li><strong>Lok Sabha</strong> – The lower house of Parliament, representing the people.</li>
+            <li><strong>Rajya Sabha</strong> – The upper house of Parliament, representing the states.</li>
+        </ul>
+        <p>Parliament passes bills, discusses policies, and oversees the functioning of the government.</p>
+        <button onclick="closePopup('legislative-popup')">Go Back</button>
+    </div>
+
+    <div class="popup" id="judiciary-popup">
+        <h2>Judiciary of India</h2>
+        <p>The Judiciary interprets laws and ensures justice is served. It includes:</p>
+        <ul>
+            <li><strong>Supreme Court</strong> – The highest court in India.</li>
+            <li><strong>High Courts</strong> – Courts at the state level.</li>
+            <li><strong>District and Lower Courts</strong> – Local courts that deal with specific matters.</li>
+        </ul>
+        <button onclick="closePopup('judiciary-popup')">Go Back</button>
+    </div>
+
+    <script>
+        const constitutionCard = document.getElementById('constitution-card');
+        const organBodiesCard = document.getElementById('organ-bodies-card');
+        const legislativeCard = document.getElementById('legislative-card');
+        const executiveCard = document.getElementById('executive-card');
+        const judiciaryCard = document.getElementById('judiciary-card');
+        const organBodiesScreen = document.getElementById('organ-bodies-screen');
+        const initialCards = document.getElementById('initial-cards');
+        const organBodiesCards = document.getElementById('organ-bodies-cards');
+
+        constitutionCard.addEventListener('click', () => {
+            flipCard(constitutionCard);
+            setTimeout(() => openPopup('constitution-popup'), 1000);
+        });
+
+        organBodiesCard.addEventListener('click', () => {
+            flipCard(organBodiesCard);
+            setTimeout(() => showOrganBodies(), 1000);
+        });
+
+        legislativeCard.addEventListener('click', () => {
+            flipCard(legislativeCard);
+            setTimeout(() => openPopup('legislative-popup'), 1000);
+        });
+
+        executiveCard.addEventListener('click', () => {
+            flipCard(executiveCard);
+            setTimeout(() => openPopup('executive-popup'), 1000);
+        });
+
+        judiciaryCard.addEventListener('click', () => {
+            flipCard(judiciaryCard);
+            setTimeout(() => openPopup('judiciary-popup'), 1000);
+        });
+
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        function openPopup(popupId) {
+            document.getElementById(popupId).classList.add('active');
+        }
+
+        function closePopup(popupId) {
+            document.getElementById(popupId).classList.remove('active');
+            resetCards();
+        }
+
+        function showOrganBodies() {
+            initialCards.classList.add('slide-out');
+            setTimeout(() => {
+                initialCards.style.display = 'none';
+                organBodiesScreen.classList.add('active');
+                organBodiesCards.classList.add('slide-in-from-right');
+            }, 1000);
+        }
+
+        function goBack() {
+            organBodiesScreen.classList.remove('active');
+            initialCards.style.display = 'flex';
+            initialCards.classList.remove('slide-out');
+            organBodiesCards.classList.remove('slide-in-from-right');
+            resetCards();
+        }
+
+        function resetCards() {
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.remove('flipped');
+            });
+        }
+    </script>
+</body>
+
+</html>

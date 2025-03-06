@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Analytics</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <style>
+                 body {
+            font-family: 'Mona-Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle, rgba(36,36,36,1) 0%, rgba(18,18,18,1) 100%);
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            margin: 40px auto;
+        }
+
+        .section {
+            padding: 30px;
+            margin-bottom: 30px;
+            background-color: #2a2a2a;
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: perspective(500px) rotateY(10deg);
+            transition: transform 0.6s ease, box-shadow 0.6s ease, background-color 0.8s ease;
+        }
+
+        .section:hover {
+            transform: perspective(500px) rotateY(0deg) scale(1.05);
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.7);
+            background-color: #333;
+        }
+
+        .heading,
+        .analytics-heading {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .chart-title {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            opacity: 0;
+        }
+
+        /* Responsive Design for Mobile */
+        @media (max-width: 1024px) {
+            body {
+                padding: 20px;
+            }
+
+            .heading {
+                font-size: 2.2rem;
+            }
+
+            .section {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .heading {
+                font-size: 2rem;
+            }
+
+            canvas {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .heading {
+                font-size: 1.8rem;
+            }
+
+            canvas {
+                height: 250px;
+            }
+        }
+
+        /* Floating Particles Animation */
+        .floating-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        /* Keyframe Animations for Smoothness */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Home Button Style */
+        .home-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #ff6384;
+            color: #fff;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .home-button:hover {
+            background-color: #ff4d73;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #ff6384;
+            color: #fff;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .home-button i {
+            font-size: 1.2rem;
+        }
+
+        .home-button:hover {
+            background-color: #ff4d73;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Home Button with Icon -->
+    <a href="index.html" class="home-button"><i class="fas fa-home"></i></a>
+
+    <!-- Animated Analytics Heading -->
+    <h1 class="analytics-heading">Advanced Analytics Dashboard</h1>
+
+    <div class="container">
+        <h1 class="heading">User Activity Analytics</h1>
+
+        <!-- Graph Section -->
+        <div class="section hover-section" id="chartContainer">
+            <h2 class="chart-title">Page Views Over Time</h2>
+            <canvas id="pageViewsChart"></canvas>
+        </div>
+
+        <div class="section hover-section">
+            <h2 class="chart-title">Click Activity (Quiz, Wheel, Cards)</h2>
+            <canvas id="clickActivityChart"></canvas>
+        </div>
+
+        <div class="section hover-section">
+            <h2 class="chart-title">Scroll Depth</h2>
+            <canvas id="scrollDepthChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Floating Particles Background -->
+    <div class="floating-particles" id="floatingParticles"></div>
+
+    <script>
+        // Particle Animation
+        const particleCount = 80; // Increased number of particles for denser effect
+        const particleContainer = document.getElementById('floatingParticles');
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particleContainer.appendChild(particle);
+
+            gsap.set(particle, {
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                opacity: Math.random(),
+                scale: Math.random() * 1.5,
+                backgroundColor: gsap.utils.random(['#ff6384', '#36a2eb', '#cc65fe', '#ffcd56']),
+            });
+
+            gsap.to(particle, {
+                y: Math.random() * window.innerHeight,
+                x: Math.random() * window.innerWidth,
+                opacity: Math.random(),
+                duration: gsap.utils.random(5, 10),
+                repeat: -1,
+                yoyo: true,
+                ease: 'sine.inOut'
+            });
+        }
+
+        // Analytics Heading Animation
+        gsap.from('.analytics-heading', {
+            opacity: 0,
+            duration: 2,
+            scale: 0.8,
+            ease: 'elastic.out(1, 0.5)',
+        });
+
+        gsap.fromTo('.analytics-heading', {
+            background: 'linear-gradient(90deg, #36a2eb, #ff6384)',
+        }, {
+            backgroundPosition: '200% 0',
+            duration: 5,
+            repeat: -1,
+            ease: 'linear',
+        });
+
+        // Section Animations
+        gsap.from('.heading', {
+            opacity: 0,
+            duration: 1.5,
+            y: -50,
+            ease: 'bounce',
+        });
+
+        gsap.to('.heading', {
+            opacity: 1,
+            duration: 1.5,
+            delay: 0.5,
+        });
+
+        gsap.to('.section', {
+            opacity: 1,
+            rotateY: 0,
+            duration: 2,
+            delay: 1.5,
+            stagger: 0.3,
+            ease: 'power3.out',
+        });
+
+        // Chart.js with Enhanced Animations
+        const ctx1 = document.getElementById('pageViewsChart').getContext('2d');
+        const pageViewsChart = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['12 PM', '1 PM', '2 PM', '3 PM'],
+                datasets: [{
+                    label: 'Page Views',
+                    data: [12, 19, 3, 5],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0.4,
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    onComplete: () => {
+                        // Animation for the line chart
+                        gsap.fromTo(ctx1.chartArea,
+                            { scaleY: 0 },
+                            { scaleY: 1, duration: 1.5, ease: 'bounce.out' }
+                        );
+                    },
+                    duration: 1500,
+                    easing: 'easeOutBounce'
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    }
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('clickActivityChart').getContext('2d');
+        const clickActivityChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Quiz', 'Wheel', 'Cards'],
+                datasets: [{
+                    label: 'Clicks',
+                    data: [50, 75, 100],
+                    backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe'],
+                    borderColor: '#fff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    onComplete: () => {
+                        // Animation for the bar chart
+                        gsap.fromTo(ctx2.chartArea,
+                            { scaleY: 0 },
+                            { scaleY: 1, duration: 1.5, ease: 'bounce.out' }
+                        );
+                    },
+                    duration: 1500,
+                    easing: 'easeOutExpo'
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        }
+                    }
+                }
+            }
+        });
+
+        const ctx3 = document.getElementById('scrollDepthChart').getContext('2d');
+        const scrollDepthChart = new Chart(ctx3, {
+            type: 'radar',
+            data: {
+                labels: ['0-25%', '25-50%', '50-75%', '75-100%'],
+                datasets: [{
+                    label: 'Scroll Depth',
+                    data: [10, 30, 50, 70],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: {
+                    onComplete: () => {
+                        // Animation for the radar chart
+                        gsap.fromTo(ctx3.chartArea,
+                            { scaleY: 0 },
+                            { scaleY: 1, duration: 1.5, ease: 'bounce.out' }
+                        );
+                    },
+                    duration: 1500,
+                    easing: 'easeOutExpo'
+                },
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: false
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

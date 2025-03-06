@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organ Bodies of Government Quiz</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+       body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .box {
+            display: inline-block;
+            background-color: #222;
+            color: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 10px;
+            width: 200px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .box:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+
+        .questions {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .questions.active {
+            display: block;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            background: #222;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        .question p {
+            margin: 0 0 10px;
+        }
+
+        label {
+            display: block;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            background-color: #333;
+            margin-left: 0;
+            text-align: left;
+        }
+
+        input[type="radio"] {
+            accent-color: #f1c40f;
+            margin-right: 10px;
+        }
+
+        label:hover {
+            background-color: #444;
+            transform: scale(1.02);
+        }
+
+        .popup {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.9);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.5s ease-in-out;
+            max-width: 90%;
+            width: 600px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .popup.active {
+            display: block;
+        }
+
+        .popup h2 {
+            margin: 0 0 20px;
+            font-size: 24px;
+        }
+
+        .popup p {
+            font-size: 18px;
+            margin: 0 0 20px;
+        }
+
+        .popup button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+        }
+
+        .popup button:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+
+        .submit-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .submit-buttons button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            font-size: 16px;
+        }
+
+        .submit-buttons button:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+
+        .correct-answer {
+            color: #2ecc71;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .wrong-answer {
+            color: #e74c3c;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Responsive design for mobile screens */
+        @media only screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            .box {
+                width: 100%;
+                margin: 5px 0;
+                padding: 15px;
+            }
+
+            .submit-buttons button {
+                padding: 10px 20px;
+            }
+
+            .popup button {
+                padding: 10px 20px;
+            }
+        }
+        #body-selection, #category-selection {
+            display: none;
+            text-align: center;
+        }
+
+        #body-selection .box {
+            width: 300px;
+        }
+
+        #category-selection .box {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Heading -->
+        <h1 id="main-heading">Organs of Indian Government</h1>
+
+        <!-- Original Categories -->
+        <div id="categories">
+            <div class="box" onclick="startQuiz('judiciary')">Judiciary</div>
+            <div class="box" onclick="startQuiz('legislative')">Legislative</div>
+            <div class="box" onclick="startQuiz('executive')">Executive</div>
+
+            <!-- New heading and category for Constitution -->
+            <h1>Indian Constitution</h1>
+            <div class="box" onclick="startQuiz('constitution')">Constitution</div>
+        </div>
+
+        <!-- Quiz interface -->
+        <div id="quiz" class="questions">
+            <!-- Quiz Category Heading -->
+            <h1 id="quiz-heading"></h1> <!-- This will display the selected quiz heading -->
+            <div id="question-container"></div>
+            <div class="submit-buttons">
+                <button onclick="submitQuiz()">Submit</button>
+                <button onclick="goBack()">Go Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup for quiz results -->
+    <div id="popup" class="popup">
+        <h2>Quiz Results</h2>
+        <p id="result"></p>
+        <div class="submit-buttons">
+            <button onclick="goBack()">Go Back</button>
+            <button onclick="checkResults()">Check Results</button>
+        </div>
+    </div>
+
+    <script>
+                const questions = {
+            judiciary: [
+                { question: "The system of judicial review originated in?", options: ["India", "USA", "Russia", "More than one above"], correct: 1 },
+                { question: "Supreme in SP Gupta V/s. Union of AIR 1982, SC 149 decided?", options: ["Free legal Aid", "Bonded labours", "Judges transfer", "Illegal detention"], correct: 2 },
+                { question: "The power of judicial review relates to?", options: ["Advice president on constitutional matter", "Declare laws of parliament unconstitutional", "Review the organisation of judiciary", "Prepare laws to preserve the rules of law"], correct: 1 },
+                { question: "Which of the following statements about the judicial system in India is correct?", options: ["The high court of a state can take up a dispute between the center and states", "The federal court of India in colonial times is the predecessor of the Supreme Court of India", "PIL can only be filed by the aggrieved person", "Only the Supreme Court has judicial review power"], correct: 1 },
+                { question: "What is the main function of the Supreme Court of India?", options: ["Advising the President", "Legislating new laws", "Enforcing laws", "Interpreting the Constitution"], correct: 3 }
+            ],
+            legislative: [
+                { question: "Which of the following is a part of the Indian Parliament?", options: ["Supreme Court", "Legislative Assembly", "Legislative Council", "Both Houses of Parliament"], correct: 3 },
+                { question: "The maximum number of members in the Lok Sabha is?", options: ["500", "545", "550", "552"], correct: 3 },
+                { question: "The Rajya Sabha is the upper house of the Parliament of India. How are its members elected?", options: ["Directly by the people", "By the State Legislative Assemblies", "By the President", "By the Prime Minister"], correct: 1 },
+                { question: "Which of the following is not a function of the Parliament?", options: ["Legislation", "Judicial Review", "Budget Approval", "Representation"], correct: 1 },
+                { question: "The power to dissolve the Lok Sabha lies with?", options: ["The President", "The Prime Minister", "The Speaker of the Lok Sabha", "The Rajya Sabha"], correct: 2 }
+            ],
+            executive: [
+                { question: "Who is the head of the executive branch of the Indian government?", options: ["The President", "The Prime Minister", "The Chief Justice", "The Governor"], correct: 1 },
+                { question: "Which of the following is not a function of the Prime Minister?", options: ["Leading the executive branch", "Formulating policy", "Representing India internationally", "Interpreting laws"], correct: 3 },
+                { question: "The President of India can be removed from office by?", options: ["Impeachment by Parliament", "A vote of no confidence", "A court order", "Resignation"], correct: 0 },
+                { question: "Who appoints the Chief Minister of a state?", options: ["The President", "The Prime Minister", "The Governor", "The Legislature"], correct: 2 },
+                { question: "The Council of Ministers is headed by?", options: ["The President", "The Speaker", "The Prime Minister", "The Chief Minister"], correct: 2 }
+            ],
+            constitution: [  // New Constitution category questions
+                { question: "Which part of the Constitution deals with the fundamental rights?", options: ["Part III", "Part IV", "Part V", "Part II"], correct: 0 },
+                { question: "The Constitution of India was adopted on?", options: ["15 August 1947", "26 January 1950", "26 November 1949", "2 October 1947"], correct: 2 },
+                { question: "Who is known as the Father of the Indian Constitution?", options: ["Mahatma Gandhi", "B.R. Ambedkar", "Jawaharlal Nehru", "Sardar Patel"], correct: 1 },
+                { question: "Which article of the Constitution provides for the right to freedom of religion?", options: ["Article 19", "Article 21", "Article 25", "Article 32"], correct: 2 },
+                { question: "Which of the following languages is recognized by the Constitution?", options: ["Hindi", "English", "Both Hindi and English", "None of these"], correct: 2 }
+            ]
+        };
+
+        let selectedCategory = "";
+        let score = 0;
+
+        function startQuiz(category) {
+            selectedCategory = category;
+            const questionContainer = document.getElementById("question-container");
+            questionContainer.innerHTML = "";
+            questions[category].forEach((q, index) => {
+                const questionHTML = `
+                    <div class="question">
+                        <p>${index + 1}. ${q.question}</p>
+                        ${q.options.map((option, i) => `
+                            <label>
+                                <input type="radio" name="question${index}" value="${i}">
+                                ${option}
+                            </label>
+                        `).join('')}
+                    </div>`;
+                questionContainer.innerHTML += questionHTML;
+            });
+
+            // Hide the main heading and change the quiz heading based on the selected category
+            document.getElementById("main-heading").style.display = "none";
+            document.getElementById("quiz-heading").textContent = getQuizTitle(category); // Update the quiz heading
+            document.getElementById("categories").style.display = "none";
+            document.getElementById("quiz").classList.add("active");
+        }
+
+        function getQuizTitle(category) {
+            switch (category) {
+                case 'judiciary': return 'Judiciary';
+                case 'legislative': return 'Legislative';
+                case 'executive': return 'Executive';
+                case 'constitution': return 'Constitution';
+                default: return 'Organs of Indian Government';
+            }
+        }
+
+        function submitQuiz() {
+            const answers = document.querySelectorAll('input[type="radio"]:checked');
+            if (answers.length < questions[selectedCategory].length) {
+                alert("Please answer all questions.");
+                return;
+            }
+
+            score = 0;
+            answers.forEach((answer, index) => {
+                const question = questions[selectedCategory][index];
+                if (parseInt(answer.value) === question.correct) {
+                    score++;
+                }
+            });
+
+            showPopup();
+        }
+
+        function showPopup() {
+            const resultText = `You answered ${score} out of ${questions[selectedCategory].length} questions correctly.`;
+            document.getElementById("result").textContent = resultText;
+            document.getElementById("popup").classList.add("active");
+        }
+
+        function goBack() {
+            document.getElementById("main-heading").style.display = "block"; // Show the main heading again
+            document.getElementById("categories").style.display = "block"; // Show categories
+            document.getElementById("quiz").classList.remove("active"); // Hide quiz
+            document.getElementById("popup").classList.remove("active"); // Hide popup
+            document.querySelector('.submit-buttons').style.display = 'flex';  // Show submit buttons
+        }
+
+        function checkResults() {
+            const questionContainer = document.getElementById("question-container");
+            questionContainer.innerHTML = "";
+
+            questions[selectedCategory].forEach((q, index) => {
+                const userAnswer = document.querySelector(`input[name="question${index}"]:checked`);
+                const correctAnswerIndex = q.correct;
+                const userAnswerValue = userAnswer ? parseInt(userAnswer.value) : -1;
+
+                let resultHTML = `
+                    <div class="question">
+                        <p>${index + 1}. ${q.question}</p>
+                        ${q.options.map((option, i) => {
+                            let labelClass = '';
+
+                            // If it's the correct answer, highlight in green
+                            if (i === correctAnswerIndex) {
+                                labelClass = 'correct-answer';
+                            }
+
+                            // If the user selected this answer and it's wrong, highlight in red
+                            if (i === userAnswerValue && userAnswerValue !== correctAnswerIndex) {
+                                labelClass = 'wrong-answer';
+                            }
+
+                            return `
+                                <label class="${labelClass}">
+                                    <input type="radio" disabled ${i === userAnswerValue ? 'checked' : ''}>
+                                    ${option}
+                                </label>`;
+                        }).join('')}
+                    </div>`;
+
+                questionContainer.innerHTML += resultHTML;
+            });
+
+            document.getElementById("popup").classList.remove("active");
+            document.getElementById("quiz").classList.add("active");
+            document.querySelector('.submit-buttons').style.display = 'none';  // Hide the submit button
+        }
+    </script>
+</body>
