@@ -117,9 +117,8 @@ This project aims to **simplify the Indian Constitution** for students preparing
 ---
 
 ## 📞 Contact
-👩‍💻 Developed by:  
-- Nitesh Agarwal  
+👩‍💻 Developed by: 
 - Nishu Pundir  
 
-📸 Instagram: [@cosmic_nitesh_](https://www.instagram.com/cosmic_nitesh_)
+📸 Instagram: [@cosmic_nitesh_](https://www.instagram.com/niishu.pr)
 
