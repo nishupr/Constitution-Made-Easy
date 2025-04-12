@@ -122,5 +122,5 @@ This project aims to **simplify the Indian Constitution** for students preparing
 - Nitesh Agarwal  
 
 📸 Instagram: [@niishu.pr](https://www.instagram.com/niishu.pr) 
-    LinkedIn: [LinkedIn](https://www.linkedin.com/in/nishu-pundir-33a188336)
+   - LinkedIn: [LinkedIn](https://www.linkedin.com/in/nishu-pundir-33a188336)
 
